@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이태화 | 티아우바 메시지를 쉬운 말로</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    :root {
+      --blue: #2f6bff;
+      --blue-dark: #1f55e0;
+      --blue-soft: #e9f0ff;
+      --ink: #191c22;
+      --sub: #5b6270;
+      --line: #e6e9ef;
+      --white: #ffffff;
+      --pastel-blue: #f2f6ff;
+      --pastel-yellow: #fff8e9;
+      --pastel-green: #effaf4;
+      --pastel-purple: #f5f2ff;
+      --radius-lg: 28px;
+      --radius-md: 20px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--white);
+      color: var(--ink);
+      font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.7;
+      word-break: keep-all;          /* 한글 어절 단위 줄바꿈 */
+      overflow-wrap: break-word;
+    }
+    h1, h2, h3 { word-break: keep-all; letter-spacing: -0.02em; }
+    a { color: inherit; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+    /* 공통 버튼 */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 15px 28px;
+      border-radius: 999px;
+      font-weight: 700; font-size: 1.05rem;
+      text-decoration: none;
+      transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary { background: var(--blue); color: #fff; box-shadow: 0 10px 24px rgba(47,107,255,0.28); }
+    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); }
+    .btn-ghost { background: var(--white); color: var(--ink); border: 1px solid var(--line); }
+    .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+    .btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+    /* 상단 메뉴 */
+    .nav {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; text-decoration: none; }
+    .logo-mark {
+      width: 34px; height: 34px;
+      background: var(--blue); color: #fff;
+      border-radius: 12px 12px 12px 4px;   /* 말풍선 모양 */
+      display: grid; place-items: center;
+      font-size: 0.95rem;
+    }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { text-decoration: none; color: var(--sub); font-weight: 600; font-size: 0.98rem; }
+    .nav-links a:hover { color: var(--blue); }
+    .nav-links .btn { padding: 10px 20px; font-size: 0.95rem; color: #fff; }
+
+    /* 1. 히어로 */
+    .hero {
+      background: radial-gradient(ellipse at 80% 20%, #e3ecff 0%, transparent 55%),
+                  radial-gradient(ellipse at 10% 90%, #fff3d9 0%, transparent 45%);
+      padding: 96px 0 88px;
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: center; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--blue-soft); color: var(--blue);
+      font-weight: 700; font-size: 0.92rem;
+      padding: 8px 16px; border-radius: 999px 999px 999px 6px;
+      margin-bottom: 22px;
+    }
+    .hero h1 { font-size: clamp(2.3rem, 5.4vw, 3.8rem); font-weight: 800; line-height: 1.25; margin-bottom: 22px; }
+    .hero h1 em { font-style: normal; color: var(--blue); }
+    .hero-lead { font-size: clamp(1.08rem, 2vw, 1.25rem); color: var(--sub); margin-bottom: 36px; max-width: 540px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-note { margin-top: 18px; color: var(--sub); font-size: 0.92rem; }
+
+    .hero-visual { position: relative; }
+    .hero-photo {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      box-shadow: 0 30px 60px rgba(25,28,34,0.15);
+    }
+    .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .bubble {
+      position: absolute;
+      background: #fff;
+      padding: 14px 18px;
+      border-radius: 20px;
+      box-shadow: 0 14px 34px rgba(25,28,34,0.14);
+      font-size: 0.95rem; font-weight: 600;
+      max-width: 250px;
+      line-height: 1.5;
+    }
+    .bubble small { display: block; color: var(--sub); font-weight: 500; font-size: 0.8rem; margin-bottom: 2px; }
+    .bubble.q { left: -36px; top: 40px; border-bottom-left-radius: 6px; }
+    .bubble.a { right: -28px; bottom: 48px; background: var(--blue); color: #fff; border-bottom-right-radius: 6px; }
+    .bubble.a small { color: rgba(255,255,255,0.8); }
+
+    /* 2. 주제 로고 월 */
+    .topics { background: var(--pastel-blue); padding: 56px 0; }
+    .topics-title { text-align: center; color: var(--sub); font-weight: 600; margin-bottom: 26px; }
+    .topic-wall { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .topic {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #fff;
+      border: 1px solid var(--line);
+      padding: 12px 20px;
+      border-radius: 16px;
+      font-weight: 700;
+      color: #333a46;
+    }
+    .topic i {
+      width: 28px; height: 28px; border-radius: 9px;
+      background: var(--blue-soft); color: var(--blue);
+      display: grid; place-items: center;
+      font-style: normal; font-size: 0.85rem; font-weight: 800;
+    }
+
+    /* 숫자 띠 */
+    .stats { padding: 72px 0 24px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center; }
+    .stat strong { display: block; font-size: clamp(2.2rem, 5vw, 3rem); font-weight: 800; color: var(--blue); line-height: 1.2; }
+    .stat span { color: var(--sub); font-weight: 600; }
+
+    /* 3. 기능(활동) 소개 */
+    .section-head { text-align: center; margin: 0 auto 64px; max-width: 680px; }
+    .eyebrow { color: var(--blue); font-weight: 700; margin-bottom: 10px; }
+    .section-head h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); font-weight: 800; line-height: 1.3; margin-bottom: 14px; }
+    .section-head p { color: var(--sub); font-size: 1.08rem; }
+
+    .features { padding: 72px 0 40px; }
+    .feature {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+      margin-bottom: 96px;
+    }
+    .feature:nth-child(even) .feature-art { order: 2; }
+    .feature-tag {
+      display: inline-block;
+      background: var(--blue-soft); color: var(--blue);
+      font-weight: 700; font-size: 0.88rem;
+      padding: 6px 14px; border-radius: 999px 999px 999px 4px;
+      margin-bottom: 16px;
+    }
+    .feature h3 { font-size: clamp(1.6rem, 3.2vw, 2.1rem); font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+    .feature p { color: var(--sub); font-size: 1.06rem; margin-bottom: 18px; }
+    .checks { list-style: none; display: grid; gap: 10px; }
+    .checks li { display: flex; gap: 10px; align-items: flex-start; font-weight: 600; }
+    .checks li::before {
+      content: "✓";
+      flex: none;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--blue); color: #fff;
+      display: grid; place-items: center;
+      font-size: 0.8rem; margin-top: 2px;
+    }
+    .feature-art {
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      min-height: 340px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .art-blue { background: var(--pastel-blue); }
+    .art-yellow { background: var(--pastel-yellow); }
+    .art-green { background: var(--pastel-green); }
+    .art-purple { background: var(--pastel-purple); }
+
+    /* 그림: 영상 채널 화면 */
+    .mock {
+      width: 100%; max-width: 420px;
+      background: #fff;
+      border-radius: var(--radius-md);
+      box-shadow: 0 18px 40px rgba(25,28,34,0.1);
+      overflow: hidden;
+    }
+    .mock-bar { display: flex; gap: 6px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+    .mock-bar span { width: 10px; height: 10px; border-radius: 50%; background: #dfe3ea; }
+    .mock-body { padding: 18px; display: grid; gap: 14px; }
+    .video { display: grid; grid-template-columns: 112px 1fr; gap: 14px; align-items: center; }
+    .thumb {
+      aspect-ratio: 16 / 9; border-radius: 10px;
+      display: grid; place-items: center;
+      color: #fff;
+    }
+    .thumb::after { content: "▶"; font-size: 0.9rem; }
+    .t1 { background: linear-gradient(135deg, #2f6bff, #6fa0ff); }
+    .t2 { background: linear-gradient(135deg, #ffb547, #ffd38a); }
+    .t3 { background: linear-gradient(135deg, #2fbf7a, #7fdcaf); }
+    .video b { display: block; font-size: 0.95rem; line-height: 1.4; }
+    .video small { color: var(--sub); font-size: 0.8rem; }
+
+    /* 그림: 대화 */
+    .chat { width: 100%; max-width: 400px; display: grid; gap: 14px; }
+    .msg { padding: 14px 18px; border-radius: 20px; font-weight: 600; max-width: 85%; line-height: 1.55; box-shadow: 0 8px 20px rgba(25,28,34,0.06); }
+    .msg.me { background: #fff; justify-self: start; border-bottom-left-radius: 6px; }
+    .msg.you { background: var(--blue); color: #fff; justify-self: end; border-bottom-right-radius: 6px; }
+
+    /* 그림: 주제 선택 */
+    .picker { width: 100%; max-width: 400px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pick {
+      background: #fff; border-radius: 16px; padding: 18px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(25,28,34,0.06);
+    }
+    .pick small { display: block; color: var(--sub); font-weight: 500; font-size: 0.82rem; margin-top: 4px; }
+    .pick.on { outline: 2px solid var(--blue); }
+
+    /* 그림: 30년 현장 */
+    .timeline { width: 100%; max-width: 400px; display: grid; gap: 12px; }
+    .step {
+      display: flex; align-items: center; gap: 14px;
+      background: #fff; border-radius: 16px; padding: 14px 18px;
+      box-shadow: 0 8px 20px rgba(25,28,34,0.06);
+      font-weight: 700;
+    }
+    .step i {
+      flex: none; width: 36px; height: 36px; border-radius: 12px 12px 12px 4px;
+      background: var(--blue-soft); color: var(--blue);
+      display: grid; place-items: center; font-style: normal; font-size: 0.85rem;
+    }
+    .step small { display: block; color: var(--sub); font-weight: 500; font-size: 0.82rem; }
+    .step.now { background: var(--blue); color: #fff; }
+    .step.now i { background: rgba(255,255,255,0.2); color: #fff; }
+    .step.now small { color: rgba(255,255,255,0.8); }
+
+    /* 4. 인용 */
+    .quotes { background: var(--pastel-yellow); padding: 96px 0; }
+    .quote-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .quote {
+      background: #fff;
+      border-radius: 24px 24px 24px 6px;
+      padding: 30px 28px;
+      box-shadow: 0 12px 30px rgba(25,28,34,0.06);
+      display: flex; flex-direction: column; gap: 18px;
+    }
+    .quote p { font-size: 1.08rem; font-weight: 600; line-height: 1.65; }
+    .quote p::before { content: "“"; display: block; color: var(--blue); font-size: 2.4rem; line-height: 0.8; font-weight: 800; }
+    .quote span { color: var(--sub); font-size: 0.9rem; font-weight: 600; }
+
+    /* 5. 마지막 안내 + 연락처 */
+    .cta { padding: 96px 0; }
+    .cta-box {
+      background: var(--blue);
+      color: #fff;
+      border-radius: 36px 36px 36px 10px;
+      padding: 64px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-box::after {
+      content: ""; position: absolute; right: -60px; top: -60px;
+      width: 220px; height: 220px; border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+    }
+    .cta-box h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; line-height: 1.35; margin-bottom: 14px; }
+    .cta-box p { opacity: 0.9; font-size: 1.08rem; margin-bottom: 32px; }
+    .cta-box .btn-primary { background: #fff; color: var(--blue); box-shadow: none; }
+    .cta-box .btn-primary:hover { background: #eef3ff; }
+    .icons { display: flex; justify-content: center; gap: 14px; margin-top: 36px; position: relative; z-index: 1; }
+    .icons a {
+      width: 52px; height: 52px;
+      display: grid; place-items: center;
+      border-radius: 18px 18px 18px 6px;
+      background: rgba(255,255,255,0.16);
+      color: #fff;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .icons a:hover { background: rgba(255,255,255,0.3); transform: translateY(-3px); }
+    .icons svg { width: 22px; height: 22px; fill: currentColor; }
+
+    footer { border-top: 1px solid var(--line); padding: 36px 0; text-align: center; color: var(--sub); font-size: 0.9rem; }
+
+    /* 반응형 */
+    @media (max-width: 900px) {
+      .hero { padding: 64px 0; }
+      .hero-grid, .feature { grid-template-columns: 1fr; gap: 40px; }
+      .hero-visual { max-width: 440px; margin: 0 auto; width: 100%; }
+      .bubble.q { left: -8px; }
+      .bubble.a { right: -8px; }
+      .feature:nth-child(even) .feature-art { order: 0; }
+      .feature { margin-bottom: 72px; }
+      .quote-grid { grid-template-columns: 1fr; }
+      .nav-links a:not(.btn) { display: none; }
+    }
+    @media (max-width: 520px) {
+      .stats-grid { grid-template-columns: 1fr; gap: 28px; }
+      .feature-art { padding: 22px; min-height: 0; }
+      .cta-box { padding: 48px 24px; }
+      .bubble { font-size: 0.85rem; max-width: 200px; padding: 11px 14px; }
+      .video { grid-template-columns: 90px 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 상단 메뉴 -->
+  <nav class="nav">
+    <div class="wrap">
+      <a class="logo" href="#"><span class="logo-mark">태</span>이태화</a>
+      <div class="nav-links">
+        <a href="#about">하는 일</a>
+        <a href="#words">전하는 말</a>
+        <a href="#contact">연락처</a>
+        <a class="btn btn-primary" href="https://www.youtube.com/@cosviva" target="_blank" rel="noopener">무료로 영상 보기</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 1. 히어로: 큰 약속 한 줄 + 무료 시작 버튼 -->
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="badge">💬 영상 350개, 모두 무료예요</span>
+        <h1>마음이 공허할 때,<br><em>쉬운 말로 된 답</em>을<br>들려드릴게요</h1>
+        <p class="hero-lead">30년 현장에서 땀 흘리며 살아온 이태화입니다. 인간은 성장하는 의식이라는 티아우바 메시지를 종교가 아닌 삶의 지혜로, 누구나 알아듣게 전해 드려요.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://www.youtube.com/@cosviva" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>무료로 영상 보기
+          </a>
+          <a class="btn btn-ghost" href="#about">어떤 이야기인지 보기</a>
+        </div>
+        <p class="hero-note">가입도 결제도 필요 없어요. 유튜브에서 바로 보시면 됩니다.</p>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-photo"><img src="images/hero.png" alt="이태화 프로필 사진"></div>
+        <div class="bubble q"><small>이런 고민 있으신가요?</small>요즘 왜 사는지 모르겠어요</div>
+        <div class="bubble a"><small>티아우바 메시지는 이렇게 말해요</small>그 질문이 바로 성장의 시작이에요</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 로고 월 자리: 다루는 주제 -->
+  <section class="topics">
+    <div class="wrap">
+      <p class="topics-title">영상에서 이런 주제를 다뤄요</p>
+      <div class="topic-wall">
+        <span class="topic"><i>01</i>인간의 본질</span>
+        <span class="topic"><i>02</i>삶의 목적</span>
+        <span class="topic"><i>03</i>고통의 의미</span>
+        <span class="topic"><i>04</i>내면의 답</span>
+        <span class="topic"><i>05</i>사랑과 관계</span>
+        <span class="topic"><i>06</i>자유와 책임</span>
+        <span class="topic"><i>07</i>문명과 미래</span>
+        <span class="topic"><i>08</i>실천</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 숫자 -->
+  <section class="stats">
+    <div class="wrap stats-grid">
+      <div class="stat"><strong>350+</strong><span>무료로 나눈 영상</span></div>
+      <div class="stat"><strong>30년</strong><span>현장에서 일한 시간</span></div>
+      <div class="stat"><strong>0원</strong><span>영상을 보는 데 드는 비용</span></div>
+    </div>
+  </section>
+
+  <!-- 3. 하는 일: 그림과 번갈아 소개 -->
+  <section class="features" id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">하는 일</p>
+        <h2>어려운 이야기를 쉽게, 그리고 끝까지 무료로</h2>
+        <p>제가 하는 일을 네 가지로 정리해 드릴게요.</p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-art art-blue">
+          <div class="mock" aria-hidden="true">
+            <div class="mock-bar"><span></span><span></span><span></span></div>
+            <div class="mock-body">
+              <div class="video"><div class="thumb t1"></div><div><b>나는 왜 태어났을까</b><small>삶의 목적</small></div></div>
+              <div class="video"><div class="thumb t2"></div><div><b>고통은 벌이 아니다</b><small>고통의 의미</small></div></div>
+              <div class="video"><div class="thumb t3"></div><div><b>관계가 힘들 때 기억할 것</b><small>사랑과 관계</small></div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <span class="feature-tag">무료 영상</span>
+          <h3>유튜브 영상 350개, 모두 무료로 나눠요</h3>
+          <p><a href="https://www.youtube.com/@cosviva" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;text-decoration:none">@cosviva</a> 채널에서 지금까지 약 350개의 영상을 대가 없이 공개했어요. 목적은 수익이 아니라 메시지를 널리 전하는 것이에요.</p>
+          <ul class="checks">
+            <li>광고나 결제 유도 없이 볼 수 있어요</li>
+            <li>한 편씩 짧게, 출퇴근길에 보기 좋아요</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-art art-yellow">
+          <div class="chat" aria-hidden="true">
+            <div class="msg me">불안해서 잠이 안 와요</div>
+            <div class="msg you">불안은 내면이 답을 찾으라고 보내는 신호예요</div>
+            <div class="msg me">그럼 뭘 하면 되나요?</div>
+            <div class="msg you">오늘 할 수 있는 작은 실천 하나부터요</div>
+          </div>
+        </div>
+        <div>
+          <span class="feature-tag">현실의 지혜</span>
+          <h3>종교가 아니라, 오늘 쓸 수 있는 지혜로</h3>
+          <p>믿으라고 하지 않아요. 공허함, 불안, 관계, 성장처럼 지금 겪는 문제를 어떻게 바라보고 풀지 현실적인 말로 이야기해요.</p>
+          <ul class="checks">
+            <li>특정 종교나 단체와 관계없어요</li>
+            <li>어려운 용어 대신 생활 속 예시로 설명해요</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-art art-green">
+          <div class="picker" aria-hidden="true">
+            <div class="pick on">인간의 본질<small>나는 누구인가</small></div>
+            <div class="pick">삶의 목적<small>왜 사는가</small></div>
+            <div class="pick">고통의 의미<small>왜 힘든가</small></div>
+            <div class="pick">자유와 책임<small>어떻게 살 것인가</small></div>
+          </div>
+        </div>
+        <div>
+          <span class="feature-tag">주제별 정리</span>
+          <h3>궁금한 주제부터 골라 보세요</h3>
+          <p>인간의 본질부터 실천까지 여덟 가지 주제로 나눠 이야기해요. 처음부터 순서대로 보지 않아도, 지금 마음에 걸리는 주제 하나로 시작하시면 돼요.</p>
+          <ul class="checks">
+            <li>8가지 주제로 나눠 찾기 쉬워요</li>
+            <li>핵심은 하나: 인간은 성장하는 의식이에요</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-art art-purple">
+          <div class="timeline" aria-hidden="true">
+            <div class="step"><i>01</i><div>건설 비계 기능공<small>현장의 시작</small></div></div>
+            <div class="step"><i>02</i><div>조선소 족장 기능공<small>높은 곳에서 배운 책임</small></div></div>
+            <div class="step"><i>03</i><div>도매시장<small>사람과 부딪히며 배운 관계</small></div></div>
+            <div class="step now"><i>04</i><div>인테리어 금속 용접<small>2023년부터 지금까지</small></div></div>
+          </div>
+        </div>
+        <div>
+          <span class="feature-tag">현장의 목소리</span>
+          <h3>책상이 아니라 현장에서 나온 이야기</h3>
+          <p>30년 가까이 비계, 조선소, 도매시장을 거쳐 지금은 용접 일을 해요. 몸으로 부딪혀 온 삶이라서, 메시지도 땀 흘리며 사는 분들의 말로 전할 수 있어요.</p>
+          <ul class="checks">
+            <li>성균관대 행정학 졸업, 부산에서 살고 있어요</li>
+            <li>매일 일하면서 틈틈이 영상을 만들어요</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 인용: 전하는 말 -->
+  <section class="quotes" id="words">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">전하는 말</p>
+        <h2>영상에서 가장 자주 드리는 말이에요</h2>
+      </div>
+      <div class="quote-grid">
+        <!-- 시청자 댓글로 바꾸고 싶으면 아래 문장과 출처를 실제 댓글로 교체하세요 -->
+        <div class="quote">
+          <p>당신은 몸이 아니라, 지금도 자라고 있는 의식이에요.</p>
+          <span>— 인간의 본질</span>
+        </div>
+        <div class="quote">
+          <p>힘든 경험도 버려지는 시간이 아니에요. 모두 깨달음으로 가는 길이에요.</p>
+          <span>— 고통의 의미</span>
+        </div>
+        <div class="quote">
+          <p>답은 밖이 아니라 내 안에 있어요. 오늘 작은 실천 하나로 시작해 보세요.</p>
+          <span>— 내면의 답 · 실천</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 마지막 안내 + 연락처 -->
+  <section class="cta" id="contact">
+    <div class="wrap">
+      <div class="cta-box">
+        <h2>첫 영상, 지금 바로 무료로 보세요</h2>
+        <p>함께 나누고 싶은 이야기가 있다면 편하게 연락 주세요. 다정하게 답해 드릴게요.</p>
+        <a class="btn btn-primary" href="https://www.youtube.com/@cosviva" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>@cosviva 채널 가기
+        </a>
+        <div class="icons">
+          <!-- 유튜브 채널 -->
+          <a href="https://www.youtube.com/@cosviva" aria-label="유튜브 @cosviva" title="유튜브 @cosviva" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+          </a>
+          <!-- 이메일: href="#"를 href="mailto:내이메일주소"로 바꾸세요 -->
+          <a href="#" aria-label="이메일" title="이메일">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.2-8 5-8-5V6l8 5 8-5v2.2z"/></svg>
+          </a>
+          <!-- GitHub: href="#"를 href="https://github.com/내아이디"로 바꾸세요 -->
+          <a href="#" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+          </a>
+          <!-- LinkedIn: href="#"를 href="https://www.linkedin.com/in/내아이디"로 바꾸세요 -->
+          <a href="#" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>© 2026 이태화 · 모든 메시지는 무료로 나눕니다.</footer>
+
+</body>
+</html>
